@@ -32,6 +32,8 @@ public class RobotCentricTeleOp extends LinearOpMode {
 
     private double LSY = 1.0, LSX = 1.0, RSX = 1.0;
 
+    private double IM = 0.7;
+
     private boolean isAutoDriving = false;
 
     private Gamepad currentGamepad1 = new Gamepad();
@@ -125,7 +127,7 @@ public class RobotCentricTeleOp extends LinearOpMode {
                 robot.Setup_Deposit_Claw(true);
             }
 
-            robot.Intake(-gamepad2.left_stick_y*0.75);
+            robot.Intake(-gamepad2.left_stick_y * IM);
 
             if(gamepad2.left_bumper){
                 robot.Deposit_Arm(true);
@@ -135,7 +137,7 @@ public class RobotCentricTeleOp extends LinearOpMode {
 
             if(gamepad2.left_trigger > 0.0) {
                 robot.Setup_Intake_Pose_RTP(true);
-                robot.Setup_Horizontal_Lift(0.3);
+                robot.Setup_Horizontal_Lift(0.15);
             } else if(gamepad2.right_trigger > 0.0) {
                 robot.Setup_Intake_Pose_RTP(false);
             }

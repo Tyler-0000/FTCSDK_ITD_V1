@@ -18,10 +18,13 @@ apply from: '../build.dependencies.gradle'
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
 
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 24
+    }
+
     packagingOptions {
-        jniLibs {
-            pickFirsts += ['**/*.so']
-        }
         jniLibs.useLegacyPackaging true
     }
 }
@@ -36,9 +39,6 @@ repositories {
     maven {
         url= 'https://maven.pedropathing.com/'
     }
-    maven {
-        url "https://repo.dairy.foundation/releases"
-    }
 }
 dependencies {
     implementation project(':FtcRobotController')
@@ -52,7 +52,4 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.20'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
 
-    // SolversLib
-    implementation "org.solverslib:core:0.2.7"
-    implementation "org.solverslib:pedroPathing:0.2.5"
 }
