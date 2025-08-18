@@ -44,6 +44,11 @@ public class RobotPower {
         return getMagnitude() < PathingConstants.MIN_VELOCITY;
     }
 
+    public boolean isZero() {
+        return Math.abs(forward) < 1e-3 && Math.abs(strafe) < 1e-3 && Math.abs(turn) < 1e-3;
+    }
+
+
     private double clamp(double value, double min, double max) {
         return Math.max(min, Math.min(max, value));
     }

@@ -50,6 +50,8 @@ public class CurvedPathAuto extends LinearOpMode {
         operator.addPath(trajectory);
         operator.startPath(0, getRuntime());
 
+        telemetry.addData("Total Paths", operator.getTotalPaths());
+        telemetry.addData("Current Index", operator.getCurrentIndex());
         telemetry.addLine("Ready to run curved path");
         telemetry.update();
         waitForStart();
@@ -64,7 +66,10 @@ public class CurvedPathAuto extends LinearOpMode {
 
             telemetry.addData("Pose", currentPose);
             telemetry.addData("Power", power);
+            telemetry.addData("Follower Active", operator.getCurrentIndex() >= 0);
+            telemetry.addData("Power is Zero", power.isZero()); // Optional: add isZero() method to RobotPower
             telemetry.update();
+
         }
 
         // Stop motors

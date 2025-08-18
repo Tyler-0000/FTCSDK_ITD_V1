@@ -39,6 +39,8 @@ public class follower {
 
         Pose2d targetPose = trajectory.getPoseAt(t);
         PathingVelocity targetVelocity = trajectory.getVelocity(t);
+        System.out.printf("Target Velocity: x=%.2f y=%.2f rot=%.2f\n",
+                targetVelocity.xVelocity, targetVelocity.yVelocity, targetVelocity.rotationVelocity);
 
         // Field bounds check
         if (targetPose.getX() < 0 || targetPose.getX() > FieldConstants.FIELD_WIDTH ||
@@ -50,13 +52,19 @@ public class follower {
         double yError = targetPose.getY() - currentPose.getY();
         double headingError = normalizeAngle(targetPose.getHeading() - currentPose.getHeading());
 
+        System.out.printf("Errors: x=%.2f y=%.2f heading=%.2f\n", xError, yError, headingError);
+
         double xCorrection = xController.calculate(xError);
         double yCorrection = yController.calculate(yError);
         double headingCorrection = headingController.calculate(headingError);
 
+        System.out.printf("Corrections: x=%.2f y=%.2f heading=%.2f\n", xCorrection, yCorrection, headingCorrection);
+
         double correctedX = targetVelocity.xVelocity + xCorrection;
         double correctedY = targetVelocity.yVelocity + yCorrection;
         double correctedRot = targetVelocity.rotationVelocity + headingCorrection;
+
+        System.out.printf("Corrections: x=%.2f y=%.2f heading=%.2f\n", xCorrection, yCorrection, headingCorrection);
 
         // Clamp to max velocity
         correctedX = clamp(correctedX, -DriveConstants.MAX_VELOCITY, DriveConstants.MAX_VELOCITY);
@@ -67,6 +75,8 @@ public class follower {
         double dt = PathingConstants.SAMPLE_RESOLUTION;
         double accelX = (correctedX - previousX) / dt;
         double accelY = (correctedY - previousY) / dt;
+
+        System.out.printf("Acceleration: ax=%.2f ay=%.2f\n", accelX, accelY);
 
         if (Math.abs(accelX) > DriveConstants.MAX_ACCELERATION) {
             correctedX = previousX + Math.signum(accelX) * DriveConstants.MAX_ACCELERATION * dt;
@@ -90,7 +100,13 @@ public class follower {
                 t, correctedX, correctedY, correctedRot, ticksPerSecondX, ticksPerSecondY, estimatedAngularVelocity);
 
         PathingPower controlOutput = new PathingPower(correctedY, correctedX, correctedRot);
-        return RobotPower.fromPathingPower(controlOutput);
+        RobotPower output = RobotPower.fromPathingPower(controlOutput);
+
+        if (output.isZero()) {
+            System.out.printf("Warning: RobotPower is zero at t=%.2f\n", t);
+        }
+
+        return output;
     }
 
     public boolean isFinished(double currentTime) {
