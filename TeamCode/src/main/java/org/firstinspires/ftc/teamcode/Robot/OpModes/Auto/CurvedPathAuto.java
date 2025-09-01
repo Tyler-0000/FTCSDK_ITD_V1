@@ -6,11 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import java.util.List;
 
 import org.firstinspires.ftc.teamcode.Pathing.Follower.pathOperator;
-import org.firstinspires.ftc.teamcode.Pathing.Hardware.DriveBase;
 import org.firstinspires.ftc.teamcode.Pathing.Hardware.OdometryHardware;
 import org.firstinspires.ftc.teamcode.Pathing.PathingGeneration.HybridPathing.QuinticHermiteSegment;
 import org.firstinspires.ftc.teamcode.Pathing.PathingGeneration.Trajectory;
-import org.firstinspires.ftc.teamcode.Pathing.PathingUtility.RobotPower;
 import org.firstinspires.ftc.teamcode.Pathing.PathingUtility.Waypoint;
 import org.firstinspires.ftc.teamcode.Pathing.RobotUtility.Odometry;
 import org.firstinspires.ftc.teamcode.Pathing.RobotUtility.Pose2d;
@@ -24,9 +22,8 @@ public class CurvedPathAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Initialize hardware
-        DriveBase driveBase = new DriveBase(hardwareMap);
-        OdometryHardware odoHardware = new OdometryHardware(hardwareMap);
-        Odometry odometry = new Odometry(odoHardware);
+        OdometryHardware hardware = new OdometryHardware(hardwareMap);
+        Odometry odometry = new Odometry(hardware);
 
         // Initialize pose
         Pose2d startPose = new Pose2d(0, 0, 0); // inches, radians
@@ -45,10 +42,9 @@ public class CurvedPathAuto extends LinearOpMode {
                 reversed
         );
 
-        // Initialize path operator
-        pathOperator operator = new pathOperator();
+        // Initialize path operator with OdometryHardware
+        pathOperator operator = new pathOperator(hardware);
         operator.addPath(trajectory);
-        operator.startPath(0, getRuntime());
 
         telemetry.addData("Total Paths", operator.getTotalPaths());
         telemetry.addData("Current Index", operator.getCurrentIndex());
@@ -56,24 +52,23 @@ public class CurvedPathAuto extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
+        // Start path and apply initial movement
+        Pose2d currentPose = odometry.getPose();
+        operator.startPath(0, getRuntime(), currentPose);
+
         // Autonomous loop
         while (opModeIsActive() && !operator.isCurrentPathFinished(getRuntime())) {
             odometry.update(); // Update pose from encoders
-
-            Pose2d currentPose = odometry.getPose();
-            RobotPower power = operator.update(currentPose, getRuntime());
-            driveBase.applyPower(power);
+            currentPose = odometry.getPose();
+            operator.updateAndDrive(currentPose, getRuntime());
 
             telemetry.addData("Pose", currentPose);
-            telemetry.addData("Power", power);
             telemetry.addData("Follower Active", operator.getCurrentIndex() >= 0);
-            telemetry.addData("Power is Zero", power.isZero()); // Optional: add isZero() method to RobotPower
             telemetry.update();
-
         }
 
         // Stop motors
-        driveBase.stop();
+        hardware.stop();
         telemetry.addLine("Path complete");
         telemetry.update();
     }
