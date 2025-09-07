@@ -216,14 +216,10 @@ public class Samples extends OpMode {
     }
     public void intakeOut(){
         //not timing it, because very likely it will be followed by a pedro moving
-        robot.Intake(-0.55);
-        robot.Setup_Intake_Pose_RTP(false);
-//                    robot.Horizontal_Lift(true);a
-        robot.Setup_Horizontal_Lift(1.0);
+
     }
     public void intakeBack(){
-        robot.Setup_Intake_Pose_RTP(true);
-        robot.Setup_Horizontal_Lift(0.0);
+
 //        robot.Intake(0);
 //        robot.Setup_Deposit_Claw(false);
 //        robot.wristBack();
@@ -288,7 +284,7 @@ public class Samples extends OpMode {
                 break;
             case 205:
                 if(!follower.isBusy()&&pathTimer.getElapsedTimeSeconds()>1.5){
-                    robot.Intake(0);
+                    //robot.Intake(0);
                     follower.followPath(scorePickup1,true);
                     setPathState(301);
                 }
@@ -351,7 +347,7 @@ public class Samples extends OpMode {
                     intakeBack();
                     /* Since this is a pathChain, we can have Pedro hold the end point while we are scoring the sample */
                     if(pathTimer.getElapsedTimeSeconds()>2.5){
-                        robot.Intake(0);
+                        //robot.Intake(0);
                         follower.followPath(scorePickup2,true);
                         setPathState(591);
                     }
@@ -424,7 +420,7 @@ public class Samples extends OpMode {
                     intakeBack();
                     /* Since this is a pathChain, we can have Pedro hold the end point while we are scoring the sample */
                     if(pathTimer.getElapsedTimeSeconds()>1.4){
-                        robot.Intake(0);
+                        //robot.Intake(0);
                         intakeBack();
                         follower.followPath(scorePickup3,true);
                         setPathState(791);

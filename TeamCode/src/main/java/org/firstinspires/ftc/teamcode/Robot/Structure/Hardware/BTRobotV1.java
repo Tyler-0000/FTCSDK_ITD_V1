@@ -53,7 +53,7 @@ public class BTRobotV1 {
         myOpMode = opMode;
     }
     //NOTE: when not talking about a lift L indicates Left and R indicates Right
-    public DcMotor VLL, VLR, I;
+
     public Servo HLL, HLR, IL, IR, DW, DC, IP, ADAL, ADAR;
     public RevColorSensorV3 colorSensor;
 
@@ -72,50 +72,7 @@ public class BTRobotV1 {
     }
 
     public void initialize(boolean showTelemetry) {
-        //Vertical lift Motors
-        if(isAuto) {
-            VLL = setupAutoLiftMotor("VLL", DcMotor.Direction.FORWARD);
-            VLR = setupAutoLiftMotor("VLR", DcMotor.Direction.REVERSE);
-        } else {
-            VLL = setupLiftMotor("VLL", DcMotor.Direction.FORWARD);
-            VLR = setupLiftMotor("VLR", DcMotor.Direction.REVERSE);
-        }
 
-        //Horizontal lift Servo
-        HLL = setupServo("HLL", Servo.Direction.REVERSE);
-        HLR = setupServo("HLR", Servo.Direction.FORWARD);
-
-        //Horizontal life Motors
-        //HL = setupMotor("HL", DcMotorSimple.Direction.FORWARD);
-
-        //Intake
-        I = setupDriveMotor("I", DcMotor.Direction.REVERSE);
-
-        //Intake Rotation Servos
-        IL = setupServo("IL", Servo.Direction.FORWARD);
-        IR = setupServo("IR", Servo.Direction.REVERSE);
-
-        //Intake Servo Horn
-        IP = setupServo("ISH", Servo.Direction.FORWARD);
-
-        //Deposit Servo DW = "Deposit Wrist" DC = "Deposit Claw"
-        DW = setupServo("DW", Servo.Direction.FORWARD);
-        DC = setupServo("DC", Servo.Direction.FORWARD);
-
-        //Deposit Arm ADAL = "Axon Deposit Arm Left" ADAR = "Axon Deposit Arm Right"
-        ADAL = setupServo("ADAL", Servo.Direction.REVERSE);
-        ADAR = setupServo("ADAR", Servo.Direction.FORWARD);
-
-        colorSensor = (RevColorSensorV3) myOpMode.hardwareMap.get("colorSensor");
-
-        colorSensor.enableLed(true);
-
-        touchSensor = (TouchSensor) myOpMode.hardwareMap.get("touchSensor");
-
-        if(DA_Rotation < 0.15) {
-            ADAL.setPosition(0.15);
-            ADAR.setPosition(0.15);
-        }
     }
 
     //Setups the Drive Motor As Well As Setting Direction
@@ -158,28 +115,16 @@ public class BTRobotV1 {
         showTelemetry = show;
     }
     public void TelemetryOutput() {
-        myOpMode.telemetry.addData("Vertical_Lift",  VLR.getCurrentPosition());
-        myOpMode.telemetry.addData("Horizontal_Lift",  HLL.getPosition());
-        myOpMode.telemetry.addData("HL", HL_Extension);
-        myOpMode.telemetry.addData("Intake_Rotation",  IR.getPosition());
-        myOpMode.telemetry.addData("Deposit_Claw",  DC.getPosition());
-        myOpMode.telemetry.addData("Deposit_Wrist",  DW.getPosition());
-        myOpMode.telemetry.addData("Deposit_Arm", ADAR.getPosition());
+
         myOpMode.telemetry.addData("Red_Value", "%.2f", redValue);
         myOpMode.telemetry.addData("Green_Value", "%.2f", greenValue);
         myOpMode.telemetry.addData("Blue_Value", "%.2f", blueValue);
         myOpMode.telemetry.addData("Alpha_Value", "%.2f", alphaValue);
         myOpMode.telemetry.addData("Color", intakeColor);
-        myOpMode.telemetry.addData("Intake Pow", I.getPower());
-        myOpMode.telemetry.addData("touchSensorIsPressed", touchSensorIsPressed);
-        myOpMode.telemetry.addData("touchSensorValue", "%.2f", touchSensorValue);
+
     }
 
     public void getColor(){
-        redValue = colorSensor.red();
-        greenValue = colorSensor.green();;
-        blueValue = colorSensor.blue();
-        alphaValue = colorSensor.alpha();
 
         if (blueValue >= greenValue && blueValue >= redValue) {
             intakeColor = "Blue";
@@ -199,15 +144,7 @@ public class BTRobotV1 {
         if(!touchSensorIsPressed) {
             resetVertical_Lift(true);
         } else{
-            VLL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            VLL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            VLL.setTargetPosition(0);
-            VLL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            VLR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            VLR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            VLR.setTargetPosition(0);
-            VLR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             VL_Extension = 0;
         }
     }
@@ -293,10 +230,7 @@ public class BTRobotV1 {
 
     public void Setup_Vertical_Lift(int EXT, double pow) {
         VL_Extension = EXT;
-        VLL.setTargetPosition(VL_Extension);
-        VLR.setTargetPosition(VL_Extension);
-        VLL.setPower(pow);
-        VLR.setPower(pow);
+
     }
 
     public void Setup_Horizontal_Lift(double EXT) {
@@ -340,29 +274,17 @@ public class BTRobotV1 {
         DW.setPosition(DW_Rotation);
     }
 
-    public void Intake(double pow) {
-        I.setPower(pow);
-    }
+
 
     public void Intake_Poop(boolean t) {
-        if(t){
-            IP.setPosition(0.0);
-        } else {
-            IP.setPosition(0.5);
-        }
     }
 
     public void Setup_Deposit_Arm(double Rot){
-        DA_Rotation = Rot;
-        ADAR.setPosition(DA_Rotation);
-        ADAL.setPosition(DA_Rotation);
+
     }
 
     public void SpecimenScore(){
-        Setup_Deposit_Claw(false);
-        Setup_Deposit_Arm(0.22);
-        Setup_Deposit_Wrist(0.9);
-        Setup_Vertical_Lift(475, 1.0);
+
     }
 
     public void verticalSlideUp(){
@@ -370,22 +292,11 @@ public class BTRobotV1 {
     }
 
     public void HighBasketScore(){
-        Setup_Intake_Pose(0.2);
-        Setup_Deposit_Arm(0.6);
-        Setup_Deposit_Wrist(0.75);
-        Setup_Vertical_Lift(760, 1.0);
     }
 
     public void SpecimenGrab(){
-        Setup_Deposit_Claw(true);
-        Setup_Deposit_Arm(0.95);
-        Setup_Deposit_Wrist(0.63);
-        Setup_Vertical_Lift(80, 1.0);
     }
 
     public void TransferSample(){
-        Setup_Deposit_Arm(0.15);
-        Setup_Deposit_Wrist(0.0);
-        Setup_Vertical_Lift(0, 0.7);
     }
 }

@@ -54,7 +54,7 @@ public class RobotCentricTeleOp extends LinearOpMode {
 
             follower.startTeleopDrive();
 
-            robot.colorSensor.enableLed(true);
+//            robot.colorSensor.enableLed(true);
             robot.getColor();
         }
         // Wait for the game to start (driver presses START)
@@ -107,49 +107,7 @@ public class RobotCentricTeleOp extends LinearOpMode {
                 Mode = "Regular_Mode";
             }
 
-            if(gamepad2.right_stick_y > 0.0){
-                robot.Horizontal_Lift(true);
-            } else if(gamepad2.right_stick_y < 0.0) {
-                robot.Horizontal_Lift(false);
-            }
 
-            if(gamepad2.x) {
-                robot.Vertical_Lift(true);
-            } else if(gamepad2.b) {
-                robot.Vertical_Lift(false);
-            }
-
-            if(gamepad2.a) {
-                robot.Setup_Deposit_Claw(false);
-            } else if(gamepad2.y) {
-                robot.Setup_Deposit_Claw(true);
-            }
-
-            robot.Intake(-gamepad2.left_stick_y*0.75);
-
-            if(gamepad2.left_bumper){
-                robot.Deposit_Arm(true);
-            } else if(gamepad2.right_bumper) {
-                robot.Deposit_Arm(false);
-            }
-
-            if(gamepad2.left_trigger > 0.0) {
-                robot.Setup_Intake_Pose_RTP(true);
-                robot.Setup_Horizontal_Lift(0.3);
-            } else if(gamepad2.right_trigger > 0.0) {
-                robot.Setup_Intake_Pose_RTP(false);
-            }
-
-            if(gamepad2.dpad_up){
-                robot.Setup_Deposit_Arm(0.55);
-                robot.HighBasketScore();
-            } else if (gamepad2.dpad_left) {
-                robot.SpecimenGrab();
-            } else if (gamepad2.dpad_right) {
-                robot.SpecimenScore();
-            } else if (gamepad2.dpad_down) {
-                robot.TransferSample();
-            }
 
             if(!isAutoDriving) {
                 follower.setTeleOpMovementVectors(

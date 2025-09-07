@@ -134,7 +134,7 @@ public class FieldCentricTeleOp extends LinearOpMode {
                 robot.Deposit_Wrist(true);
             }
 
-            robot.Intake(-gamepad2.left_stick_y);
+            //robot.Intake(-gamepad2.left_stick_y);
 
             if(gamepad1.dpad_up){
                 robot.Deposit_Arm(true);
