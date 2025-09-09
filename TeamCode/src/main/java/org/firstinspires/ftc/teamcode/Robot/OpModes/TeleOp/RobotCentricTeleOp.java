@@ -74,7 +74,7 @@ public class RobotCentricTeleOp extends LinearOpMode {
                 Color_Alliance = "Red";
             }
 
-            robot.Intake_Poop(robot.intakeColor.equals(Color_Alliance) || robot.intakeColor.equals("Yellow"));
+ //           robot.Intake_Poop(robot.intakeColor.equals(Color_Alliance) || robot.intakeColor.equals("Yellow"));
             
             if(currentGamepad1.dpad_up && !previousGamepad1.dpad_up) {
                 isAutoDriving = true;
