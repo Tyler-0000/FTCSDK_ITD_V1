@@ -83,33 +83,7 @@ public class BTRobotV1 {
         return aMotor;
     }
 
-    private DcMotor setupAutoLiftMotor(String deviceName, DcMotor.Direction direction) {
-        DcMotor aMotor = myOpMode.hardwareMap.get(DcMotor.class, deviceName);
-        aMotor.setDirection(direction);
-        aMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        aMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        aMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        aMotor.setTargetPosition(0);
-        aMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        return aMotor;
-    }
 
-    private DcMotor setupLiftMotor(String deviceName, DcMotor.Direction direction) {
-        DcMotor aMotor = myOpMode.hardwareMap.get(DcMotor.class, deviceName);
-        aMotor.setDirection(direction);
-        aMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        aMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        aMotor.setTargetPosition(0);
-        aMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        return aMotor;
-    }
-
-    //Setups the Servos As Well As Setting Direction
-    private Servo setupServo(String deviceName, Servo.Direction direction) {
-        Servo aServo = myOpMode.hardwareMap.get(Servo.class, deviceName);
-        aServo.setDirection(direction);
-        return aServo;
-    }
 
     public void showTelemetry(boolean show) {
         showTelemetry = show;
@@ -124,108 +98,8 @@ public class BTRobotV1 {
 
     }
 
-    public void getColor(){
-
-        if (blueValue >= greenValue && blueValue >= redValue) {
-            intakeColor = "Blue";
-        } else if (greenValue >= redValue) {
-            intakeColor = "Yellow";
-        } else {
-            intakeColor = "Red";
-        }
-    }
-
-    public void getTouchSensor() {
-        touchSensorIsPressed = touchSensor.isPressed();
-        touchSensorValue = touchSensor.getValue();
-    }
-
-    public void resetSlides() {
-        if(!touchSensorIsPressed) {
-            resetVertical_Lift(true);
-        } else{
-
-            VL_Extension = 0;
-        }
-    }
-
-    public void resetVertical_Lift(boolean t){
-        if(t){
-            VL_Extension -= VL_Increment;
-            Setup_Vertical_Lift(VL_Extension, 1.0);
-        }
-    }
-
-    public void Vertical_Lift(boolean t) {
-        if(t){
-            VL_Extension += VL_Increment;
-            VL_Extension = Math.max(MIN_VL_Height, Math.min(MAX_VL_Height, VL_Extension));
-            Setup_Vertical_Lift(VL_Extension, 1.0);
-        } else {
-            VL_Extension -= VL_Increment * 5;
-            VL_Extension = Math.max(MIN_VL_Height, Math.min(MAX_VL_Height, VL_Extension));
-            Setup_Vertical_Lift(VL_Extension, 1.0);
-        }
-    }
-
-    public void Horizontal_Lift(boolean t) {
-        if(t){
-            HL_Extension += HL_Increment;
-            HL_Extension = Math.max(MIN_HL_Distance, Math.min(MAX_HL_Distance, HL_Extension));
-            Setup_Horizontal_Lift(HL_Extension);
-        } else {
-            HL_Extension -= HL_Increment;
-            HL_Extension = Math.max(MIN_HL_Distance, Math.min(MAX_HL_Distance, HL_Extension));
-            Setup_Horizontal_Lift(HL_Extension);
-        }
-    }
-
-    /*public void Horizontal_Lift(boolean t) {
-        if(t){
-            HL_Extension += HL_Increment;
-            HL_Extension = Math.max(MIN_HL_Distance, Math.min(MAX_HL_Distance, HL_Extension));
-            Setup_Horizontal_Lift(HL_Extension);
-        } else {
-            HL_Extension -= HL_Increment;
-            HL_Extension = Math.max(MIN_HL_Distance, Math.min(MAX_HL_Distance, HL_Extension));
-            Setup_Horizontal_Lift(HL_Extension);
-        }
-    }*/
-
-    public void Intake_Pose(boolean t) {
-        if(t){
-            I_Rotation += I_Increment;
-            I_Rotation = Math.max(MIN_I_Rotation, Math.min(MAX_I_Rotation, I_Rotation));
-            Setup_Intake_Pose(I_Rotation);
-        } else {
-            I_Rotation -= I_Increment;
-            I_Rotation = Math.max(MIN_I_Rotation, Math.min(MAX_I_Rotation, I_Rotation));
-            Setup_Intake_Pose(I_Rotation);
-        }
-    }
-
     public void Deposit_Wrist(boolean t) {
-        if(t){
-            DW_Rotation += DW_Increment;
-            DW_Rotation = Math.max(DW_MIN_Rotation, Math.min(DW_MAX_Rotation, DW_Rotation));
-            Setup_Deposit_Wrist(DW_Rotation);
-        } else {
-            DW_Rotation -= DW_Increment;
-            DW_Rotation = Math.max(DW_MIN_Rotation, Math.min(DW_MAX_Rotation, DW_Rotation));
-            Setup_Deposit_Wrist(DW_Rotation);
-        }
-    }
 
-    public void Deposit_Arm(boolean t){
-        if(t){
-            DA_Rotation += DA_Increment;
-            DA_Rotation = Math.max(DA_MIN_Rotation, Math.min(DA_MAX_Rotation, DA_Rotation));
-            Setup_Deposit_Arm(DA_Rotation);
-        } else {
-            DA_Rotation -= DA_Increment;
-            DA_Rotation = Math.max(DA_MIN_Rotation, Math.min(DA_MAX_Rotation, DA_Rotation));
-            Setup_Deposit_Arm(DA_Rotation);
-        }
     }
 
     public void Setup_Vertical_Lift(int EXT, double pow) {
@@ -233,17 +107,6 @@ public class BTRobotV1 {
 
     }
 
-    public void Setup_Horizontal_Lift(double EXT) {
-       // HL_Extension = EXT;
-     //   HLL.setPosition(HL_Extension);
-     //   HLR.setPosition(HL_Extension);
-    }
-
-    /*public void Setup_Horizontal_Lift(double EXT) {
-        HL_Extension = EXT;
-        HLL.setPosition(EXT);
-        HLR.setPosition(EXT);
-    }*/
 
     public void Setup_Intake_Pose(double Rot) {
      //   I_Rotation = Rot;
@@ -269,11 +132,6 @@ public class BTRobotV1 {
         }
     }
 
-    public void Setup_Deposit_Wrist(double Rot) {
-        //DW_Rotation = Rot;
-        //DW.setPosition(DW_Rotation);
-    }
-
 
 
     public void Intake_Poop(boolean t) {
@@ -283,19 +141,11 @@ public class BTRobotV1 {
 
     }
 
-    public void SpecimenScore(){
-
-    }
 
     public void verticalSlideUp(){
         Setup_Vertical_Lift(800, 1.0);
     }
 
-    public void HighBasketScore(){
-    }
-
-    public void SpecimenGrab(){
-    }
 
     public void TransferSample(){
     }

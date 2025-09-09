@@ -54,8 +54,6 @@ public class RobotCentricTeleOp extends LinearOpMode {
 
             follower.startTeleopDrive();
 
-//            robot.colorSensor.enableLed(true);
-            robot.getColor();
         }
         // Wait for the game to start (driver presses START)
         telemetry.addData("Status", "Initialized");
@@ -68,7 +66,7 @@ public class RobotCentricTeleOp extends LinearOpMode {
         while(opModeIsActive()){
             previousGamepad1.copy(currentGamepad1);
             currentGamepad1.copy(gamepad1);
-            robot.getColor();
+
 
             if(currentGamepad1.x && !previousGamepad1.x){
                 Color_Alliance = "Blue";

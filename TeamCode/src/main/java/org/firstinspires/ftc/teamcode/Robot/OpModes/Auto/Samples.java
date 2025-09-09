@@ -521,7 +521,6 @@ public class Samples extends OpMode {
         follower.setStartingPose(startPose);
         buildPaths();
         robot.initialize(true);
-        robot.getColor();
         Color_Alliance = "Blue";
     }
 
