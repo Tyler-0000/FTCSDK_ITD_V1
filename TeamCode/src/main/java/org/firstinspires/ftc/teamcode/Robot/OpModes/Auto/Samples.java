@@ -183,8 +183,8 @@ public class Samples extends OpMode {
         }
     }
     public void raiseArm(){
-        robot.Setup_Deposit_Arm(0.5);
-        robot.Setup_Deposit_Claw(false);
+//        robot.Setup_Deposit_Arm(0.5);
+//        robot.Setup_Deposit_Claw(false);
 //        robot.Setup_Deposit_Claw(false);
     }
     public void transferSample(){
@@ -521,7 +521,6 @@ public class Samples extends OpMode {
         follower.setStartingPose(startPose);
         buildPaths();
         robot.initialize(true);
-        robot.colorSensor.enableLed(true);
         robot.getColor();
         Color_Alliance = "Blue";
     }

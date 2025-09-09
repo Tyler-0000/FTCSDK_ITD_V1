@@ -234,9 +234,9 @@ public class BTRobotV1 {
     }
 
     public void Setup_Horizontal_Lift(double EXT) {
-        HL_Extension = EXT;
-        HLL.setPosition(HL_Extension);
-        HLR.setPosition(HL_Extension);
+       // HL_Extension = EXT;
+     //   HLL.setPosition(HL_Extension);
+     //   HLR.setPosition(HL_Extension);
     }
 
     /*public void Setup_Horizontal_Lift(double EXT) {
@@ -246,32 +246,32 @@ public class BTRobotV1 {
     }*/
 
     public void Setup_Intake_Pose(double Rot) {
-        I_Rotation = Rot;
-        IL.setPosition(I_Rotation);
-        IR.setPosition(I_Rotation);
+     //   I_Rotation = Rot;
+     //   IL.setPosition(I_Rotation);
+     //   IR.setPosition(I_Rotation);
     }
 
     public void Setup_Intake_Pose_RTP(boolean t) {
         if(t) {
-            IL.setPosition(0.45);
-            IR.setPosition(0.45);
+           // IL.setPosition(0.45);
+           // IR.setPosition(0.45);
         } else{
-            IL.setPosition(0.0);
-            IR.setPosition(0.0);
+           // IL.setPosition(0.0);
+           // IR.setPosition(0.0);
         }
     }
 
     public void Setup_Deposit_Claw(boolean t) {
         if(t){
-            DC.setPosition(0.3);
+            //DC.setPosition(0.3);
         } else {
-            DC.setPosition(0.0);
+            //DC.setPosition(0.0);
         }
     }
 
     public void Setup_Deposit_Wrist(double Rot) {
-        DW_Rotation = Rot;
-        DW.setPosition(DW_Rotation);
+        //DW_Rotation = Rot;
+        //DW.setPosition(DW_Rotation);
     }
 
 

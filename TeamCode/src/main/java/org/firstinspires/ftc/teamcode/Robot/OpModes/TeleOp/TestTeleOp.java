@@ -23,9 +23,7 @@ public class TestTeleOp extends OpMode{
     BTRobotV1 robot = new BTRobotV1(this);
     @Override
     public void loop() {
-        if(gamepad1.dpad_up) {
-            robot.HighBasketScore();
-        }
+
     }
 
     /** This method is called once at the init of the OpMode. **/
